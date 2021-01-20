@@ -1,0 +1,59 @@
+.fileButton {
+    width: 100px;
+    height: 33px;
+    display: block;
+}
+
+.editorContainer {
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.gridContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+}
+
+.editorCell {
+    border: 1px solid lightgray;
+    padding: 0;
+    margin: 0;
+    width: 32px;
+    height: 32px
+}
+.editorCell::before {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 0;
+    padding-bottom: 100%;
+}
+
+#cell_type_selector_container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100px);
+    grid-auto-rows: 25px;
+}
+
+.mazeWall {
+    background-color: black;
+}
+
+.mazePath {
+    background-color: white;
+}
+
+.mazeStart {
+    background-color: lightgreen;
+}
+
+.mazeEnd {
+    background-color: red;
+}
+
+.cellHover {
+    background-color: gray;
+}

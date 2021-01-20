@@ -1,0 +1,31 @@
+.timer {
+    font-size: large;
+    font-weight: bold;
+    color: green;
+}
+
+.container-table {
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+
+.container-table .header-row {
+    height: 150px;
+    border-bottom: 2px solid darkgray;
+}
+
+.game-container {
+    /* border: 1px solid blue; */
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.maze-canvas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}

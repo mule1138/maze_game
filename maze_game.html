@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <title>
+        Maze Game
+    </title>
+
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/game.css">
+
+</head>
+
+<body>
+    <table class="container-table">
+        <tr class="header-row">
+            <td>
+                <div style="font-weight: bold; font-size: x-large;">Maze Editor</div>
+                <table style="width: 100%;">
+                    <tr>
+                        <td>
+                            <span class="label">Timer:</span>
+                            <span class="timer" id="timer">00:00.000</span>
+                        </td>
+                        <td style="width: 200px;">
+                            <div class="label">Renderer:</div><br/>
+                            <input type="radio" id="2d_radio" name="renderer" checked="true">
+                            <label for="2d_radio">2D</label>
+
+                            <input type="radio" id="3d_radio" name="renderer">
+                            <label for="3d_radio">3D</label><br>
+                        </td>
+                        <td style="width: 200px; text-align: right;">
+                            <button class="button" id="edit_button" style="width: 100px; height: 100px;" onclick="window.location.href='maze_editor.html';">Edit
+                                Maze</button>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="game-container">
+                    <canvas class="maze-canvas" id="maze-canvas"></canvas>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script type="module" src="./src/maze_game.js"></script>
+</body>
+
+</html>
