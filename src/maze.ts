@@ -4,6 +4,10 @@
 const DEFAULT_CELL_WIDTH_UNITS = 32;
 const DEFAULT_CELL_HEIGHT_UNITS = 32;
 
+export enum CellTypes {
+
+}
+
 export interface Cell {
     row: number;
     col: number;
@@ -238,7 +242,7 @@ export class Maze {
         this.cells[cellIdx] = 'end';
     }
 
-    getCellDimensions(): CellDimensions{
+    getCellDimensions(): CellDimensions {
         return this.cellDimensions;
     }
 
@@ -247,18 +251,21 @@ export class Maze {
         this.cellDimensions.height = height;
     }
 
-    getCellBoundingBox(row: number, col: number): BoundingBox {
-        const left = col * this.cellDimensions.width;
-        const top = row * this.cellDimensions.height;
-        const right = left + this.cellDimensions.width - 1;
-        const bottom = top + this.cellDimensions.height - 1;
+    getCellBoundingBox(row: number, col: number): BoundingBox | null {
+        let bbox = null;
+        if (row > -1 && row < this.height && col > -1 && col < this.width) {
+            const left = col * this.cellDimensions.width;
+            const top = row * this.cellDimensions.height;
+            const right = left + this.cellDimensions.width - 1;
+            const bottom = top + this.cellDimensions.height - 1;
 
-        const bbox: BoundingBox = {
-            left: left,
-            top: top,
-            right: right,
-            bottom: bottom
-        };
+            bbox = {
+                left: left,
+                top: top,
+                right: right,
+                bottom: bottom
+            };
+        }
 
         return bbox;
     }
@@ -281,8 +288,11 @@ export class Maze {
     }
 
     private calcCellIndex(row: number, col: number): number {
-        const rowStartIdx = row * this.width;
-        const cellIdx = rowStartIdx + col;
+        let cellIdx = -1;
+        if (row > -1 && row < this.height && col > -1 && col < this.width) {
+            const rowStartIdx = row * this.width;
+            cellIdx = rowStartIdx + col;
+        }
 
         return cellIdx;
     }
