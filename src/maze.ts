@@ -296,5 +296,4 @@ export class Maze {
 
         return cellIdx;
     }
-
 }
