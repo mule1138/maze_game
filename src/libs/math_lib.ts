@@ -21,17 +21,17 @@ export function calcSlopeFromHeading(heading: number): number {
         case 270:
             slope = 0;
             break;
-        case 45:
+        case 315:
         case 225:
             slope = 1;
             break;
+        case 45:
         case 135:
-        case 315:
             slope = -1;
             break;
         default:
             const headingRad = degToRad(heading);
-            slope = 1 / Math.tan(headingRad);
+            slope = -(1 / Math.tan(headingRad));
             break;
     }
 
