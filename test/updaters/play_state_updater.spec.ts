@@ -4,7 +4,7 @@ import { Maze } from "../../src/maze";
 import { assert } from 'chai';
 import 'mocha';
 
-describe.('play_state_updater', () => {
+describe('play_state_updater', () => {
     const testMazeJSON = '{"width":"5","height":"5","cellDimensions":{"width":32,"height":32},"cells":["Start","Path","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Wall","Wall","End"]}';
     const testMaze = Maze.fromJSON(testMazeJSON);
 
