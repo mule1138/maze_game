@@ -6,7 +6,10 @@ const DEFAULT_CELL_WIDTH_UNITS = 32;
 const DEFAULT_CELL_HEIGHT_UNITS = 32;
 
 export enum CellTypes {
-
+    START = 'Start',
+    END = 'End',
+    PATH = 'Path',
+    WALL = 'Wall'
 }
 
 export interface Cell {
@@ -25,9 +28,8 @@ export interface BoundingBox {
  * Interface describing the Cell Type object
  */
 export interface CellType {
-    type: string,
+    type: CellTypes,
     value: number,
-    label: string,
     class: string,
     bgColor: string,
     isPath: boolean
@@ -52,34 +54,30 @@ export interface MazeExtents {
  * This object defines the types of cells the maze can be composed of.
  */
 export const mazeCellTypes: any = {
-    wall: {
-        type: 'wall',
+    Wall: {
+        type: CellTypes.WALL,
         value: 0,
-        label: 'Wall',
         class: 'mazeWall',
         bgColor: 'black',
         isPath: false
     },
-    path: {
-        type: 'path',
+    Path: {
+        type: CellTypes.PATH,
         value: 1,
-        label: 'Path',
         class: 'mazePath',
         bgColor: 'white',
         isPath: true
     },
-    start: {
-        type: 'start',
+    Start: {
+        type: CellTypes.START,
         value: 2,
-        label: 'Start',
         class: 'mazeStart',
         bgColor: 'lightgreen',
         isPath: true
     },
-    end: {
-        type: 'end',
+    End: {
+        type: CellTypes.END,
         value: 3,
-        label: 'End',
         class: 'mazeEnd',
         bgColor: 'red',
         isPath: true
@@ -89,10 +87,10 @@ export const mazeCellTypes: any = {
 export class Maze {
     width: number;
     height: number;
-    cells: Array<string>;
+    cells: Array<CellTypes>;
     cellDimensions: CellDimensions;
 
-    constructor(width: number, height: number, cells: Array<string>, cellWidth: number, cellHeight: number) {
+    constructor(width: number, height: number, cells: Array<CellTypes>, cellWidth: number, cellHeight: number) {
         if (!width || !height) {
             throw new Error(`width and height must have values`);
         }
@@ -112,7 +110,7 @@ export class Maze {
             this.cells = new Array();
             const arrayLength = this.width * this.height;
             for (let i = 0; i < arrayLength; ++i) {
-                this.cells.push('wall');
+                this.cells.push(CellTypes.WALL);
             }
         }
     }
@@ -168,10 +166,10 @@ export class Maze {
         return cellType;
     }
 
-    setCellType(row: number, col: number, cellType: string) {
-        if (cellType === 'start') {
+    setCellType(row: number, col: number, cellType: CellTypes) {
+        if (cellType === CellTypes.START) {
             this.setStartCell(row, col);
-        } else if (cellType === 'end') {
+        } else if (cellType === CellTypes.END) {
             this.setEndCell(row, col);
         } else {
             const cellIdx = this.calcCellIndex(row, col);
@@ -182,7 +180,7 @@ export class Maze {
     getStartCell(): Cell | null {
         let startCell = null;
         this.cells.some((cell, idx) => {
-            if (cell === 'start') {
+            if (cell === CellTypes.START) {
                 const row = Math.floor(idx / this.width);
                 const col = idx - (row * this.width);
                 startCell = { row: row, col: col };
@@ -198,8 +196,8 @@ export class Maze {
     setStartCell(row: number, col: number) {
         // First find and clear the exising start cell
         this.cells.some((cell, idx) => {
-            if (cell === 'start') {
-                this.cells[idx] = 'path';
+            if (cell === CellTypes.START) {
+                this.cells[idx] = CellTypes.PATH;
                 return true;
             }
 
@@ -208,13 +206,13 @@ export class Maze {
 
         // Then set the start cell to the new cell
         const cellIdx = this.calcCellIndex(row, col);
-        this.cells[cellIdx] = 'start';
+        this.cells[cellIdx] = CellTypes.START;
     }
 
     getEndCell(): Cell | null {
         let endCell = null;
         this.cells.some((cell, idx) => {
-            if (cell === 'end') {
+            if (cell === CellTypes.END) {
                 const row = Math.floor(idx / this.width);
                 const col = idx - (row * this.width);
                 endCell = { row: row, col: col };
@@ -230,8 +228,8 @@ export class Maze {
     setEndCell(row: number, col: number) {
         // First find and clear the exising end cell
         this.cells.some((cell, idx) => {
-            if (cell === 'end') {
-                this.cells[idx] = 'path';
+            if (cell === CellTypes.END) {
+                this.cells[idx] = CellTypes.PATH;
                 return true;
             }
 
@@ -240,7 +238,7 @@ export class Maze {
 
         // Then set the end cell to the new cell
         const cellIdx = this.calcCellIndex(row, col);
-        this.cells[cellIdx] = 'end';
+        this.cells[cellIdx] = CellTypes.END;
     }
 
     getCellDimensions(): CellDimensions {

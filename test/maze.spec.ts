@@ -1,23 +1,21 @@
-import { Maze } from "../src/maze";
+import { Maze, CellTypes } from "../src/maze";
 import { assert } from 'chai';
 import 'mocha';
 
-describe('maze', () => {
-    const testMazeJSON = '{"width":"5","height":"5","cellDimensions":{"width":32,"height":32},"cells":["start","path","path","path","path","wall","wall","path","path","path","wall","wall","path","path","path","wall","wall","path","path","path","wall","wall","wall","wall","end"]}';
+describe.only('maze', () => {
+    const testMazeJSON = '{"width":"5","height":"5","cellDimensions":{"width":32,"height":32},"cells":["Start","Path","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Wall","Wall","End"]}';
 
     const pathCellType = {
-        type: 'path',
+        type: CellTypes.PATH,
         value: 1,
-        label: 'Path',
         class: 'mazePath',
         bgColor: 'white',
         isPath: true
     };
 
     const wallCellType = {
-        type: 'wall',
+        type: CellTypes.WALL,
         value: 0,
-        label: 'Wall',
         class: 'mazeWall',
         bgColor: 'black',
         isPath: false
@@ -51,7 +49,7 @@ describe('maze', () => {
             const testMaze = Maze.fromJSON(testMazeJSON);
             let cellType = testMaze.getCellType(1, 1);
             assert.deepEqual(cellType, wallCellType);
-            testMaze.setCellType(1, 1, "path");
+            testMaze.setCellType(1, 1, CellTypes.PATH);
 
             cellType = testMaze.getCellType(1, 1);
             assert.deepEqual(cellType, pathCellType);
@@ -81,7 +79,7 @@ describe('maze', () => {
         it('should return null when no startCell is set', () => {
             const testMaze = Maze.fromJSON(testMazeJSON);
 
-            testMaze.setCellType(0, 0, 'path');
+            testMaze.setCellType(0, 0, CellTypes.PATH);
             const cell = testMaze.getStartCell();
             assert.isNull(cell);
         });
@@ -110,7 +108,7 @@ describe('maze', () => {
         it('should return null when no end cell is set', () => {
             const testMaze = Maze.fromJSON(testMazeJSON);
 
-            testMaze.setCellType(4, 4, 'path');
+            testMaze.setCellType(4, 4, CellTypes.PATH);
             const cell = testMaze.getEndCell();
             assert.isNull(cell);
         });
