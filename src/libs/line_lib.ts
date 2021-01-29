@@ -1,11 +1,6 @@
 import * as MathLib from './math_lib';
 import { Maze } from '../maze';
-
-export interface Point {
-    x: number,
-    y: number,
-    z?: number
-}
+import { Point } from '../common';
 
 export function traverseLine(x0: number, y0: number, heading: number, maze: Maze, maxDist?: number): Point {
     let intersection = { x: x0, y: y0 };

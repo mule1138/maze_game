@@ -1,4 +1,6 @@
 
+import { BoundingBox } from './common';
+
 /**
  * The default dimensions of each cell in non-descript units.
  */
@@ -15,13 +17,6 @@ export enum CellTypes {
 export interface Cell {
     row: number;
     col: number;
-}
-
-export interface BoundingBox {
-    top: number;
-    bottom: number;
-    left: number;
-    right: number;
 }
 
 /**

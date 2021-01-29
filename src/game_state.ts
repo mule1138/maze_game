@@ -1,4 +1,5 @@
 import { Maze } from './maze';
+import { Point, Size } from './common';
 
 export enum PlayState {
     START = 'start',
@@ -14,9 +15,9 @@ export interface ButtonsState {
 };
 
 export interface PlayerState {
-    position: { x: number, y: number },
+    position: Point,
     heading: number,
-    size: { width: number, height: number };
+    size: Size;
 };
 
 export class GameState {
