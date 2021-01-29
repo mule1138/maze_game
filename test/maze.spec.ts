@@ -2,7 +2,7 @@ import { Maze, CellTypes } from "../src/maze";
 import { assert } from 'chai';
 import 'mocha';
 
-describe.only('maze', () => {
+describe('maze', () => {
     const testMazeJSON = '{"width":"5","height":"5","cellDimensions":{"width":32,"height":32},"cells":["Start","Path","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Wall","Wall","End"]}';
 
     const pathCellType = {

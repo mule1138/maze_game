@@ -4,7 +4,7 @@ import { assert } from 'chai';
 import 'mocha';
 
 describe('line_lib', () => {
-    const testMazeJSON = '{"width":"5","height":"5","cellDimensions":{"width":32,"height":32},"cells":["start","path","path","path","path","wall","wall","path","path","path","wall","wall","path","path","path","wall","wall","path","path","path","wall","wall","wall","wall","end"]}';
+    const testMazeJSON = '{"width":"5","height":"5","cellDimensions":{"width":32,"height":32},"cells":["Start","Path","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Path","Path","Path","Wall","Wall","Wall","Wall","End"]}';
     const testMaze = Maze.fromJSON(testMazeJSON);
 
     describe('traverseLine', () => {
