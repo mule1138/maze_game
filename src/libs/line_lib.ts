@@ -31,15 +31,17 @@ function traverseSteepLine(x0: number, y0: number, heading: number, maze: Maze, 
         yExtent = y - (maxDist * Math.cos(headingRad));
     }
 
-    // Calculate the x increment for each integer y step
+    // Calculate the x increment (inverse slope) for each integer y step
     let invSlope = Math.abs(1 / MathLib.calcSlopeFromHeading(heading));
     if (isNaN(invSlope)) {
         invSlope = 0;
     }
     const xFraction = (heading < 180) ? invSlope : -invSlope;
 
+    // Get the current cell and cell bounding box
     let curCell = maze.getCellFromXYUnits(x0, y0);
     if (!curCell) {
+        // Not starting in a valid cell. This shouldn't happen
         return { x: x, y: y };
     }
     let curCellBBox = maze.getCellBoundingBox(curCell.row, curCell.col) as BoundingBox;
@@ -112,14 +114,11 @@ function traverseShallowLine(x0: number, y0: number, heading: number, maze: Maze
         nextY = y0 + dy;
 
         if (xExtent && ((xDir === 1 && nextX > xExtent) || (xDir === -1 && nextX < xExtent))) {
-            // We've reached the max distance
             x = xExtent;
             y = Math.abs(xExtent - x0) * yFraction + y0;
             keepGoing = false;
         } else {
-            // Check if the new point is in the current cell, or if we need to get the next one
             if (MathLib.isPointInBoundingBox(nextX, nextY, curCellBBox) === false) {
-                // Get next cell
                 curCell = maze.getCellFromXYUnits(nextX, nextY);
                 if (!curCell || !curCell.cellType.isPath) {
                     keepGoing = false;
