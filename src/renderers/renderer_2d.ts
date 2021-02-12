@@ -104,10 +104,12 @@ export default class Renderer2d extends Renderer {
 
             for (col = 0; col < gameState.maze.width; ++col) {
                 cellType = gameState.maze.getCellType(row, col);
-                bbox.left = col * cellDims.width;
-                bbox.right = bbox.left + cellDims.width;
-                this.ctx.fillStyle = cellType.bgColor;
-                this.ctx.fillRect(bbox.left, bbox.top, bbox.right - bbox.left, bbox.bottom - bbox.top);
+                if (cellType) {
+                    bbox.left = col * cellDims.width;
+                    bbox.right = bbox.left + cellDims.width;
+                    this.ctx.fillStyle = cellType.bgColor;
+                    this.ctx.fillRect(bbox.left, bbox.top, bbox.right - bbox.left, bbox.bottom - bbox.top);
+                }
             }
         }
     }

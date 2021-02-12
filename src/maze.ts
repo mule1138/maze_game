@@ -83,10 +83,11 @@ export const mazeCellTypes: any = {
 export class Maze {
     width: number;
     height: number;
-    cells: Array<CellTypes>;
+    // cells: Array<CellTypes>;
+    cells: Array<Cell>;
     cellDimensions: CellDimensions;
 
-    constructor(width: number, height: number, cells: Array<CellTypes>, cellWidth: number, cellHeight: number) {
+    constructor(width: number, height: number, cells: Array<Cell>, cellWidth: number, cellHeight: number) {
         if (!width || !height) {
             throw new Error(`width and height must have values`);
         }
@@ -104,35 +105,65 @@ export class Maze {
 
         if (!this.cells) {
             this.cells = new Array();
-            const arrayLength = this.width * this.height;
-            for (let i = 0; i < arrayLength; ++i) {
-                this.cells.push(CellTypes.WALL);
+            for (let row = 0; row < height; ++row) {
+                for (let col = 0; col < width; ++col) {
+                    this.cells.push({
+                        row: row,
+                        col: col,
+                        cellType: mazeCellTypes.Wall
+                    });
+                }
             }
         }
     }
 
     static fromJSON(mazeJSON: any): Maze {
-        let mazeObj = null;
+        let mazeObj: any = null;
         if (typeof (mazeJSON) === 'string') {
             mazeObj = JSON.parse(mazeJSON);
         } else {
             mazeObj = mazeJSON;
         }
 
+        const cells: Array<Cell> = [];
+        let cell: Cell;
+        let row = 0;
+        let col = 0;
+        mazeObj.cells.forEach((cellType: string) => {
+            cell = {
+                row: row,
+                col: col,
+                cellType: mazeCellTypes[cellType]
+            }
+
+            cells.push(cell);
+
+            col += 1;
+            if (col >= mazeObj.width) {
+                row += 1;
+                col = 0;
+            }
+        });
+
         return new Maze(
             mazeObj.width,
             mazeObj.height,
-            mazeObj.cells,
+            cells,
             mazeObj.cellDimensions.width,
             mazeObj.cellDimensions.height);
     }
 
     toJSON(): string {
+        const jsonCells: Array<string> = [];
+        this.cells.forEach((cell: Cell) => {
+            jsonCells.push(cell.cellType.type);
+        });
+
         let mazeObj = {
             width: this.width,
             height: this.height,
             cellDimensions: this.cellDimensions,
-            cells: this.cells
+            cells: jsonCells
         }
 
         return JSON.stringify(mazeObj);
@@ -149,14 +180,12 @@ export class Maze {
         return extents;
     }
 
-    getCellType(row: number, col: number): CellType {
+    getCellType(row: number, col: number): CellType | null {
         const cellIdx = this.calcCellIndex(row, col);
 
-        let cellTypeStr;
         let cellType = null;
         if (cellIdx >= 0 && cellIdx < this.cells.length) {
-            cellTypeStr = this.cells[cellIdx];
-            cellType = mazeCellTypes[cellTypeStr];
+            cellType = this.cells[cellIdx].cellType;
         }
 
         return cellType;
@@ -169,14 +198,14 @@ export class Maze {
             this.setEndCell(row, col);
         } else {
             const cellIdx = this.calcCellIndex(row, col);
-            this.cells[cellIdx] = cellType;
+            this.cells[cellIdx].cellType = mazeCellTypes[cellType];
         }
     }
 
     getStartCell(): Cell | null {
         let startCell = null;
         this.cells.some((cell, idx) => {
-            if (cell === CellTypes.START) {
+            if (cell.cellType.type === CellTypes.START) {
                 const row = Math.floor(idx / this.width);
                 const col = idx - (row * this.width);
                 startCell = { row: row, col: col, cellType: mazeCellTypes.Start };
@@ -192,8 +221,8 @@ export class Maze {
     setStartCell(row: number, col: number) {
         // First find and clear the exising start cell
         this.cells.some((cell, idx) => {
-            if (cell === CellTypes.START) {
-                this.cells[idx] = CellTypes.PATH;
+            if (cell.cellType.type === CellTypes.START) {
+                this.cells[idx].cellType = mazeCellTypes[CellTypes.PATH];
                 return true;
             }
 
@@ -202,13 +231,13 @@ export class Maze {
 
         // Then set the start cell to the new cell
         const cellIdx = this.calcCellIndex(row, col);
-        this.cells[cellIdx] = CellTypes.START;
+        this.cells[cellIdx].cellType = mazeCellTypes[CellTypes.START];
     }
 
     getEndCell(): Cell | null {
         let endCell = null;
         this.cells.some((cell, idx) => {
-            if (cell === CellTypes.END) {
+            if (cell.cellType.type === CellTypes.END) {
                 const row = Math.floor(idx / this.width);
                 const col = idx - (row * this.width);
                 endCell = { row: row, col: col, cellType: mazeCellTypes.End };
@@ -224,8 +253,8 @@ export class Maze {
     setEndCell(row: number, col: number) {
         // First find and clear the exising end cell
         this.cells.some((cell, idx) => {
-            if (cell === CellTypes.END) {
-                this.cells[idx] = CellTypes.PATH;
+            if (cell.cellType.type === CellTypes.END) {
+                this.cells[idx].cellType = mazeCellTypes[CellTypes.PATH];
                 return true;
             }
 
@@ -234,7 +263,7 @@ export class Maze {
 
         // Then set the end cell to the new cell
         const cellIdx = this.calcCellIndex(row, col);
-        this.cells[cellIdx] = CellTypes.END;
+        this.cells[cellIdx].cellType = mazeCellTypes[CellTypes.END];
     }
 
     getCellDimensions(): CellDimensions {
@@ -275,13 +304,7 @@ export class Maze {
         } else {
             const row = Math.floor(y / this.cellDimensions.height);
             const col = Math.floor(x / this.cellDimensions.width);
-            const cellType = this.getCellType(row, col);
-
-            cell = {
-                row: row,
-                col: col,
-                cellType: cellType
-            };
+            cell = this.cells[this.calcCellIndex(row, col)];
         }
 
         return cell;
