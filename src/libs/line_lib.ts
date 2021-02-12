@@ -45,7 +45,7 @@ function traverseSteepLine(x0: number, y0: number, heading: number, maze: Maze, 
         dx += xFraction;
         nextX = x0 + dx;
 
-        if (yExtent !== undefined && ((yDir === 1 && nextY > yExtent) || (yDir === -1 && nextY < yExtent))) {
+        if (yExtent && ((yDir === 1 && nextY > yExtent) || (yDir === -1 && nextY < yExtent))) {
             // We've reached the max distance
             y = yExtent;
             x = Math.abs(yExtent - y0) * xFraction + x0;
@@ -90,7 +90,7 @@ function traverseShallowLine(x0: number, y0: number, heading: number, maze: Maze
         dy += yFraction;
         nextY = y0 + dy;
 
-        if (xExtent !== undefined && ((xDir === 1 && nextX > xExtent) || (xDir === -1 && nextX < xExtent))) {
+        if (xExtent && ((xDir === 1 && nextX > xExtent) || (xDir === -1 && nextX < xExtent))) {
             // We've reached the max distance
             x = xExtent;
             y = Math.abs(xExtent - x0) * yFraction + y0;
@@ -116,8 +116,7 @@ function testNewCoordinates(nextX: number, nextY: number, maze: Maze): boolean {
     const newCell = maze.getCellFromXYUnits(nextX, nextY);
     let keepGoing = true;
     if (newCell) {
-        const cellType = maze.getCellType(newCell.row, newCell.col);
-        if (cellType.isPath === false) {
+        if (newCell.cellType.isPath === false) {
             keepGoing = false;
         }
     } else {

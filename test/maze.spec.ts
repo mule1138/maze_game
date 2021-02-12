@@ -21,6 +21,22 @@ describe('maze', () => {
         isPath: false
     };
 
+    const startCellType = {
+        type: CellTypes.START,
+        value: 2,
+        class: 'mazeStart',
+        bgColor: 'lightgreen',
+        isPath: true
+    };
+
+    const endCellType = {
+        type: CellTypes.END,
+        value: 3,
+        class: 'mazeEnd',
+        bgColor: 'red',
+        isPath: true
+    };
+
     describe('getCellType', () => {
         it('should get the type of the specified cell', () => {
             const testMaze = Maze.fromJSON(testMazeJSON);
@@ -61,7 +77,7 @@ describe('maze', () => {
             const testMaze = Maze.fromJSON(testMazeJSON);
 
             const cell = testMaze.getStartCell();
-            assert.deepEqual(cell, { row: 0, col: 0 });
+            assert.deepEqual(cell, { row: 0, col: 0, cellType: startCellType });
         });
 
         it('should set the startCell', () => {
@@ -69,7 +85,7 @@ describe('maze', () => {
 
             testMaze.setStartCell(1, 4);
             let cell = testMaze.getStartCell();
-            assert.deepEqual(cell, { row: 1, col: 4 });
+            assert.deepEqual(cell, { row: 1, col: 4, cellType: startCellType });
 
             // Make sure the old start cell was cleared
             const cellType = testMaze.getCellType(0, 0);
@@ -90,7 +106,7 @@ describe('maze', () => {
             const testMaze = Maze.fromJSON(testMazeJSON);
 
             const cell = testMaze.getEndCell();
-            assert.deepEqual(cell, { row: 4, col: 4 });
+            assert.deepEqual(cell, { row: 4, col: 4, cellType: endCellType });
         });
 
         it('should set the end cell', () => {
@@ -98,7 +114,7 @@ describe('maze', () => {
 
             testMaze.setEndCell(1, 4);
             let cell = testMaze.getEndCell();
-            assert.deepEqual(cell, { row: 1, col: 4 });
+            assert.deepEqual(cell, { row: 1, col: 4, cellType: endCellType });
 
             // Make sure the old end cell was cleared
             const cellType = testMaze.getCellType(4, 4);
@@ -179,21 +195,21 @@ describe('maze', () => {
 
         it('should get the cell from an X, Y coordinate', () => {
             const cell = testMaze.getCellFromXYUnits(2, 2);
-            assert.deepEqual(cell, { row: 0, col: 0 });
+            assert.deepEqual(cell, { row: 0, col: 0, cellType: startCellType });
         });
 
         it('should get the cell from an X, Y on cell edge', () => {
             let cell = testMaze.getCellFromXYUnits(0, 0);
-            assert.deepEqual(cell, { row: 0, col: 0 });
+            assert.deepEqual(cell, { row: 0, col: 0, cellType: startCellType });
 
             cell = testMaze.getCellFromXYUnits(31, 31);
-            assert.deepEqual(cell, { row: 0, col: 0 });
+            assert.deepEqual(cell, { row: 0, col: 0, cellType: startCellType });
 
             cell = testMaze.getCellFromXYUnits(32, 32);
-            assert.deepEqual(cell, { row: 1, col: 1 });
+            assert.deepEqual(cell, { row: 1, col: 1, cellType: wallCellType });
 
             cell = testMaze.getCellFromXYUnits(159, 159);
-            assert.deepEqual(cell, { row: 4, col: 4 });
+            assert.deepEqual(cell, { row: 4, col: 4, cellType: endCellType });
         });
 
         it('should return null when cell is out-of-bounds', () => {

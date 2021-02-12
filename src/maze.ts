@@ -17,6 +17,7 @@ export enum CellTypes {
 export interface Cell {
     row: number;
     col: number;
+    cellType: CellType;
 }
 
 /**
@@ -178,7 +179,7 @@ export class Maze {
             if (cell === CellTypes.START) {
                 const row = Math.floor(idx / this.width);
                 const col = idx - (row * this.width);
-                startCell = { row: row, col: col };
+                startCell = { row: row, col: col, cellType: mazeCellTypes.Start };
                 return true;
             }
 
@@ -210,7 +211,7 @@ export class Maze {
             if (cell === CellTypes.END) {
                 const row = Math.floor(idx / this.width);
                 const col = idx - (row * this.width);
-                endCell = { row: row, col: col };
+                endCell = { row: row, col: col, cellType: mazeCellTypes.End };
                 return true;
             }
 
@@ -272,10 +273,15 @@ export class Maze {
             // These coordinates are outside the maze boundaries
             cell = null;
         } else {
+            const row = Math.floor(y / this.cellDimensions.height);
+            const col = Math.floor(x / this.cellDimensions.width);
+            const cellType = this.getCellType(row, col);
+
             cell = {
-                row: Math.floor(y / this.cellDimensions.height),
-                col: Math.floor(x / this.cellDimensions.width)
-            }
+                row: row,
+                col: col,
+                cellType: cellType
+            };
         }
 
         return cell;
