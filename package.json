@@ -4,7 +4,7 @@
   "description": "Maze game",
   "main": "index.js",
   "scripts": {
-    "test": "run-s build:test runTest",
+    "test": "run-s runTest",
     "build:test": "tsc -m CommonJS",
     "runTest": "mocha -r ts-node/register \"test/**/*.spec.ts\"",
     "build:ts": "tsc -m AMD -w",

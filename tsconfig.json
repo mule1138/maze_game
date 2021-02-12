@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    // "module": "amd",
+    "module": "CommonJS",
     "allowJs": true,
     "strict": true,
     "target": "es6",
