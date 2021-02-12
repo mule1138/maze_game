@@ -95,7 +95,7 @@ export default class Renderer_Raycast extends Renderer {
             rayHeading = this.calculateRayHeading(pixel, cameraPos.heading);
             rayEndPt = LineLib.traverseLine(cameraPos.x, cameraPos.y, rayHeading, gameState.maze);
             rayLength = MathLib.calcDistance(cameraPos.x, cameraPos.y, rayEndPt.x, rayEndPt.y);
-            vertUnitsPerPixel = uppConst * rayLength;
+            vertUnitsPerPixel = rayLength > 0.1 ? uppConst * rayLength : 0.1;
             wallBottomPixel = (GAME_HEIGHT / 2) + (EYE_LEVEL / vertUnitsPerPixel);
             wallTopPixel = wallBottomPixel - (WALL_HEIGHT / vertUnitsPerPixel);
 
