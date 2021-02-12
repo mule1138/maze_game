@@ -1,6 +1,6 @@
 import * as MathLib from './math_lib';
-import { Maze } from '../maze';
-import { Point } from '../common';
+import { Maze, Cell } from '../maze';
+import { BoundingBox, Point } from '../common';
 
 export function traverseLine(x0: number, y0: number, heading: number, maze: Maze, maxDist?: number): Point {
     let intersection = { x: x0, y: y0 };
@@ -36,8 +36,13 @@ function traverseSteepLine(x0: number, y0: number, heading: number, maze: Maze, 
     if (isNaN(invSlope)) {
         invSlope = 0;
     }
-    // const xFraction = (heading < 180) ? invSlope : -invSlope;
     const xFraction = (heading < 180) ? invSlope : -invSlope;
+
+    let curCell = maze.getCellFromXYUnits(x0, y0);
+    if (!curCell) {
+        return { x: x, y: y };
+    }
+    let curCellBBox = maze.getCellBoundingBox(curCell.row, curCell.col) as BoundingBox;
 
     // Iterate until we reach the end of the line, a wall, or the edge of the maze
     while (keepGoing) {
@@ -51,7 +56,17 @@ function traverseSteepLine(x0: number, y0: number, heading: number, maze: Maze, 
             x = Math.abs(yExtent - y0) * xFraction + x0;
             keepGoing = false;
         } else {
-            keepGoing = testNewCoordinates(nextX, nextY, maze);
+            // Check if the new point is in the current cell, or if we need to get the next one
+            if (!MathLib.isPointInBoundingBox(nextX, nextY, curCellBBox)) {
+                // Get next cell
+                curCell = maze.getCellFromXYUnits(nextX, nextY);
+                if (!curCell || !curCell.cellType.isPath) {
+                    keepGoing = false;
+                } else {
+                    curCellBBox = maze.getCellBoundingBox(curCell.row, curCell.col) as BoundingBox;
+                }
+            }
+
             if (keepGoing) {
                 x = nextX;
                 y = nextY;
@@ -85,6 +100,12 @@ function traverseShallowLine(x0: number, y0: number, heading: number, maze: Maze
     const slope = Math.abs(MathLib.calcSlopeFromHeading(heading));
     const yFraction = (heading > 90 && heading < 270) ? slope : -slope;
 
+    let curCell = maze.getCellFromXYUnits(x0, y0);
+    if (!curCell) {
+        return { x: x, y: y };
+    }
+    let curCellBBox = maze.getCellBoundingBox(curCell.row, curCell.col) as BoundingBox;
+
     while (keepGoing) {
         nextX = x + xDir;
         dy += yFraction;
@@ -96,7 +117,17 @@ function traverseShallowLine(x0: number, y0: number, heading: number, maze: Maze
             y = Math.abs(xExtent - x0) * yFraction + y0;
             keepGoing = false;
         } else {
-            keepGoing = testNewCoordinates(nextX, nextY, maze);
+            // Check if the new point is in the current cell, or if we need to get the next one
+            if (MathLib.isPointInBoundingBox(nextX, nextY, curCellBBox) === false) {
+                // Get next cell
+                curCell = maze.getCellFromXYUnits(nextX, nextY);
+                if (!curCell || !curCell.cellType.isPath) {
+                    keepGoing = false;
+                } else {
+                    curCellBBox = maze.getCellBoundingBox(curCell.row, curCell.col) as BoundingBox;
+                }
+            }
+
             if (keepGoing) {
                 x = nextX;
                 y = nextY;

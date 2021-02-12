@@ -1,3 +1,5 @@
+import { BoundingBox } from "../common";
+
 export function degToRad(degrees: number): number {
     return (Math.PI / 180) * degrees;
 }
@@ -36,4 +38,12 @@ export function calcSlopeFromHeading(heading: number): number {
     }
 
     return slope;
+}
+
+export function isPointInBoundingBox(x: number, y: number, boundingBox: BoundingBox): boolean {
+    const xInt = Math.floor(x);
+    const yInt = Math.floor(y);
+
+    const isInBBox = !(xInt < boundingBox.left || xInt > boundingBox.right || yInt < boundingBox.top || yInt > boundingBox.bottom);
+    return isInBBox;
 }
