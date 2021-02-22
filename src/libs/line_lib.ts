@@ -28,7 +28,7 @@ export function traverseLine(x0: number, y0: number, heading: number, maze: Maze
         nextX = x + dx;
         nextY = y + dy;
 
-        if (maxDist && nextLength >= maxDist) {
+        if (maxDist && nextLength > maxDist) {
             // We've reached the maximum distance;
             keepGoing = false;
         } else if (!MathLib.isPointInBoundingBox(nextX, nextY, curCellBBox)) {

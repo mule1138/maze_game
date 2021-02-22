@@ -49,6 +49,8 @@ describe('player_updater', () => {
             const gameState = new GameState(testMaze);
             gameState.buttons.up = true;
             gameState.player.heading = 90;
+            gameState.player.position.y = 15;
+            gameState.player.position.x = 15;
 
             const testPos = {x: gameState.player.position.x + 5, y: gameState.player.position.y};
             PlayerUpdater.updatePlayer(gameState);
@@ -60,6 +62,7 @@ describe('player_updater', () => {
             gameState.buttons.down = true;
             gameState.player.heading = 90;
             gameState.player.position.x = 50;
+            gameState.player.position.y = 15;
 
             const testPos = {x: gameState.player.position.x - 5, y: gameState.player.position.y};
             PlayerUpdater.updatePlayer(gameState);

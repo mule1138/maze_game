@@ -9,7 +9,7 @@ describe('line_lib', () => {
 
     describe('traverseLine', () => {
         it('should traverse a steep, first quadrant line', () => {
-            const testIntersection = { x: 114.1130, y: 0.0 };
+            const testIntersection = { x: 113.5918, y: 0.7444 };
             const intersection = LineLib.traverseLine(70.0, 63.0, 35, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
@@ -25,7 +25,7 @@ describe('line_lib', () => {
         });
 
         it('should traverse a shallow, first quadrant line', () => {
-            const testIntersection = { x: 160.0, y: 30.2426 };
+            const testIntersection = { x: 159.2707, y: 30.508 };
             const intersection = LineLib.traverseLine(70.0, 63.0, 70, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
@@ -41,7 +41,7 @@ describe('line_lib', () => {
         });
 
         it('should traverse a steep, second quadrant line', () => {
-            const testIntersection = { x: 160.4151, y: 138.0 };
+            const testIntersection = { x: 159.7792, y: 137.2421 };
             const intersection = LineLib.traverseLine(100.0, 66.0, 140, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
@@ -57,7 +57,7 @@ describe('line_lib', () => {
         });
 
         it('should traverse a shallow, second quadrant line', () => {
-            const testIntersection = { x: 160.0, y: 87.8382 };
+            const testIntersection = { x: 159.2006, y: 87.5472 };
             const intersection = LineLib.traverseLine(100.0, 66.0, 110, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
@@ -73,7 +73,7 @@ describe('line_lib', () => {
         });
 
         it('should traverse a steep, third quadrant line', () => {
-            const testIntersection = { x: 63.9187, y: 109.0 };
+            const testIntersection = { x: 64.0038, y: 108.8984 };
             const intersection = LineLib.traverseLine(100.0, 66.0, 220, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
@@ -89,7 +89,7 @@ describe('line_lib', () => {
         });
 
         it('should traverse a shallow, third quadrant line', () => {
-            const testIntersection = { x: 64.0, y: 79.1029 };
+            const testIntersection = { x: 64.2916, y: 78.9967 };
             const intersection = LineLib.traverseLine(100.0, 66.0, 250, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
@@ -105,7 +105,7 @@ describe('line_lib', () => {
         });
 
         it('should traverse a steep, fourth quadrant line', () => {
-            const testIntersection = { x: 44.6194, y: 0.0 };
+            const testIntersection = { x: 44.7202, y: 0.1201 };
             const intersection = LineLib.traverseLine(100.0, 66.0, 320, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
@@ -121,7 +121,7 @@ describe('line_lib', () => {
         });
 
         it('should traverse a shallow, third quadrant line', () => {
-            const testIntersection = { x: 64.0, y: 52.8970 };
+            const testIntersection = { x: 64.2916, y: 53.0032 };
             const intersection = LineLib.traverseLine(100.0, 66.0, 290, testMaze);
             intersection.x = trimDecimalNumber(intersection.x, 4);
             intersection.y = trimDecimalNumber(intersection.y, 4);
