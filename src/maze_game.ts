@@ -6,6 +6,7 @@ import * as PlayStateUpdater from './updaters/play_state_updater';
 import Renderer from './renderers/renderer_base';
 import Renderer2d from './renderers/renderer_2d';
 import RendererRaycast from './renderers/renderer_raycast';
+import { Maze } from './maze';
 
 // The target number of game iterations per second
 const FRAMES_PER_SECOND = 30;
@@ -23,7 +24,7 @@ init();
  * Function that initializes the game state and kicks off the game loop.
  */
 function init() {
-    const maze = FileLib.loadMaze();
+    let maze = FileLib.loadMaze() || FileLib.loadDefaultMaze();
     if (!maze) {
         alert('No maze to play. Go to the editor and create a maze.');
     } else {
@@ -52,6 +53,15 @@ function init() {
     }
 
     console.log("Maze game initialized");
+}
+
+function downloadMaze(maze: Maze) {
+    const aElement = window.document.createElement('a');
+    aElement.href = window.URL.createObjectURL(new Blob([maze.toJSON()], { type: 'text/json' }));
+    aElement.download = 'maze.json';
+    document.body.appendChild(aElement);
+    aElement.click();
+    document.body.removeChild(aElement);
 }
 
 /**
